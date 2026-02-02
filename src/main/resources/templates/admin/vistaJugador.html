@@ -1,138 +1,171 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Perfil del Jugador | VideoGamesHub</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>Perfil | VideoGamesHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         body {
-            background-color: #121212; /* Negro neutro */
-            color: #e0e0e0; /* Gris claro */
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Asegura que el body cubra toda la altura */
-            margin: 0; /* Elimina márgenes por defecto */
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: #e5e7eb;
         }
 
         .navbar {
-            background-color: #1f1f1f; /* Gris oscuro */
+            background-color: #020617;
+            border-bottom: 1px solid #1e293b;
         }
 
-        .main-content {
-            flex: 1; /* Hace que el contenido ocupe el espacio restante */
-            margin-top: 20px;
+        .brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #38bdf8;
         }
 
-        .footer {
-            background-color: #1f1f1f; /* Gris oscuro */
-            color: #e0e0e0; /* Gris claro */
-            padding: 20px 0;
-            text-align: center;
+        .card-pro {
+            background-color: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.65);
         }
 
-        .card {
-            background-color: #282828;
-            color: #e0e0e0;
+        .label {
+            color: #94a3b8;
+            font-size: 0.9rem;
         }
 
-        .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 15px;
+        .value {
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #38bdf8;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0ea5e9;
+        }
+
+        footer {
+            border-top: 1px solid #1e293b;
+            background-color: #020617;
         }
     </style>
 </head>
+
 <body>
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">VideoGamesHub</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/index}">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Juegos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contactos</a>
-                </li>
-            </ul>
-            <span class="navbar-text">
-                    ¡Conecta y juega!
-                </span>
-        </div>
+    <div class="container">
+        <a class="navbar-brand brand" th:href="@{/index}">VideoGamesHub</a>
+        <span class="navbar-text text-muted">
+            Perfil del jugador
+        </span>
     </div>
 </nav>
 
-<!-- Main Content -->
-<div class="container main-content">
-    <h1 class="text-center mb-4">Perfil del Jugador</h1>
-    <div class="row">
-        <!-- Contenedor del perfil -->
-        <div class="col-12">
-            <div class="profile-container">
-                <!-- Encabezado del perfil -->
-                <div class="profile-header d-flex align-items-center mb-4">
+<!-- Profile Hero -->
+<div class="container my-5">
+    <div class="card-pro p-4 mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+            <div>
+                <h2 class="mb-1"
+                    th:text="${jugador.nombre + ' ' + jugador.apellido}">
+                    Nombre Apellido
+                </h2>
+                <p class="text-muted mb-1">
+                    @<span th:text="${jugador.usuario}">usuario</span>
+                </p>
+                <small class="text-muted" th:text="${jugador.email}">
+                    email@email.com
+                </small>
+            </div>
 
+            <a th:href="@{/jugadores/editar/{id}(id=${jugador.id})}"
+               class="btn btn-primary">
+                Editar perfil
+            </a>
+        </div>
+    </div>
 
-                    <!-- Información básica -->
-                    <div>
-                        <h2 th:text="${jugador.nombre + ' ' + jugador.apellido}">Nombre del Jugador</h2>
-                        <p class="mb-0">
-                            <strong>Username:</strong> <span th:text="${jugador.usuario}">username</span><br>
-                            <strong>Email:</strong> <span th:text="${jugador.email}">email@example.com</span><br>
-                            <strong>Fecha de Nacimiento:</strong> <span th:text="${jugador.fechaNacimiento}">01/01/1990</span>
-                        </p>
+    <!-- Info Grid -->
+    <div class="row g-4">
+
+        <!-- Información personal -->
+        <div class="col-lg-6">
+            <div class="card-pro p-4 h-100">
+                <h5 class="mb-3">Información personal</h5>
+
+                <div class="mb-2">
+                    <div class="label">Nombre completo</div>
+                    <div class="value"
+                         th:text="${jugador.nombre + ' ' + jugador.apellido}">
+                        —
                     </div>
                 </div>
 
-                <!-- Sección principal del perfil -->
-                <div class="profile-details">
-                    <!-- Descripción -->
-                    <div class="mb-4">
-                        <h4>Descripción</h4>
-                        <p th:text="${jugador.descripcion}">Aquí irá una breve descripción del jugador.</p>
-                    </div>
+                <div class="mb-2">
+                    <div class="label">Usuario</div>
+                    <div class="value" th:text="${jugador.usuario}">—</div>
+                </div>
 
-                    <!-- Información adicional (podría expandirse en el futuro) -->
-                    <div class="mb-4">
-                        <h4>Estadísticas de Juego</h4>
-                        <p>Esta sección podría incluir datos como juegos favoritos, horas jugadas, logros, etc.</p>
-                    </div>
-
-                    <!-- Botones de acción -->
-                    <div class="text-end">
-                        <a th:href="@{/jugadores/editar/{id}(id=${jugador.id})}"
-                           class="btn btn-outline-primary">Editar Perfil</a>
-
-                        <a th:href="@{/jugadores/eliminar/{id}(id=${jugador.id})}"
-                           class="btn btn-outline-danger"
-                           onclick="return confirm('¿Estás seguro de que deseas eliminar este jugador?');">Eliminar</a>
-
-                        <a th:href="@{/jugadores}"
-                           class="btn btn-outline-secondary">Volver a la Lista</a>
-                    </div>
+                <div class="mb-2">
+                    <div class="label">Fecha de nacimiento</div>
+                    <div class="value" th:text="${jugador.fechaNacimiento}">—</div>
                 </div>
             </div>
         </div>
+
+        <!-- Descripción -->
+        <div class="col-lg-6">
+            <div class="card-pro p-4 h-100">
+                <h5 class="mb-3">Sobre el jugador</h5>
+
+                <p class="text-muted mb-0"
+                   th:text="${jugador.descripcion}">
+                    Este jugador aún no agregó una descripción.
+                </p>
+            </div>
+        </div>
+
+        <!-- Stats / Futuro -->
+        <div class="col-12">
+            <div class="card-pro p-4">
+                <h5 class="mb-3">Actividad & estadísticas</h5>
+                <p class="text-muted mb-0">
+                    Próximamente: juegos favoritos, horas jugadas, logros,
+                    amigos y actividad reciente.
+                </p>
+            </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="col-12 text-end">
+            <a th:href="@{/jugadores}"
+               class="btn btn-outline-secondary me-2">
+                Volver
+            </a>
+
+            <a th:href="@{/jugadores/eliminar/{id}(id=${jugador.id})}"
+               class="btn btn-outline-danger"
+               onclick="return confirm('¿Estás seguro de eliminar este jugador?');">
+                Eliminar perfil
+            </a>
+        </div>
+
     </div>
 </div>
 
 <!-- Footer -->
-<footer class="footer mt-5">
-    <div class="container">
-        <p>&copy; 2024 VideoGamesHub. Todos los derechos reservados.</p>
-    </div>
+<footer class="py-3 text-center text-muted">
+    <small>&copy; 2024 VideoGamesHub</small>
 </footer>
+
 </body>
 </html>

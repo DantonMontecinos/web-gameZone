@@ -1,6 +1,7 @@
 package io.java.springbootstart.project_me.controller;
 
 import io.java.springbootstart.project_me.dto.JugadorDTO;
+import io.java.springbootstart.project_me.modelo.Jugador;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,4 +78,25 @@ public class AppController {
             return "admin/editar";
 
     }
+
+    @GetMapping("/vistaJugador")
+    public String verPerfil(Model model) {
+
+        Jugador jugador = new Jugador();
+        jugador.setNombre("Jugador Test");
+        jugador.setApellido("Demo");
+        jugador.setUsuario("test123");
+        jugador.setEmail("test@email.com");
+
+        model.addAttribute("jugador", jugador);
+
+        return "admin/vistaJugador";
+    }
+
+    @GetMapping("/players")
+    public String verPlayers(){
+
+        return "admin/listaJugadores";
+    }
+
 }
