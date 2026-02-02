@@ -190,4 +190,6 @@ public class JugadorControlador {
         model.addAttribute("totalJugadores", jugadores.size());
         return "admin/listaJugadores";
     }
+
+
 }

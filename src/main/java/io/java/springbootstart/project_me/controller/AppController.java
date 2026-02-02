@@ -71,4 +71,10 @@ public class AppController {
         model.addAttribute("mensaje", "Ha ocurrido un error inesperado");
         return "error";
     }
+
+    @GetMapping("/editar")
+        public String editarPersona(){
+            return "admin/editar";
+
+    }
 }

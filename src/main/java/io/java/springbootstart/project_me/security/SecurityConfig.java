@@ -30,14 +30,22 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        // Páginas públicas
+                                // Permitir TODAS las rutas temporalmente mientras reestructuras
+                                .requestMatchers("/**").permitAll()
+
+                        // Si quieres mantener algunas rutas protegidas en el futuro,
+                        // puedes comentar la línea anterior y descomentar estas:
+                        /*
                         .requestMatchers("/", "/index", "/crear", "/jugadores/nuevo", "/jugadores/guardar",
                                 "/inicioLogeoCrear", "/login", "/listadoGames", "/css/**", "/js/**",
-                                "/images/**", "/webjars/**", "/error").permitAll()
-                        // Todo lo demás requiere autenticación
+                                "/images/**", "/webjars/**", "/error", "/jugadores/**",
+                                "/games/**", "/comunidades/**", "/perfil/**", "/admin/**").permitAll()
                         .anyRequest().authenticated()
+                        */
                 )
-                .userDetailsService(userDetailsService) // Configure UserDetailsService here
+                // Deshabilitar CSRF temporalmente para facilitar desarrollo
+                .csrf(csrf -> csrf.disable())
+                .userDetailsService(userDetailsService)
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/index", true)
@@ -60,10 +68,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    // Remove this method - it's causing the circular dependency
-    // @Autowired
-    // public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    //     auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    // }
 }
