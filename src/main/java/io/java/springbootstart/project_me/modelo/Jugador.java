@@ -14,6 +14,21 @@ import java.time.LocalDateTime;
 @Table(name = "jugadores")
 public class Jugador {
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "juego_id")
+    private Juego juego;
+
+    // GETTER
+    public Juego getJuego() {
+        return juego;
+    }
+
+    // SETTER - ¿Existe este método?
+    public void setJuego(Juego juego) {
+        this.juego = juego;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -30,6 +30,7 @@
             background-color: #1c1c1c;
             border-radius: 12px;
             transition: transform .2s, box-shadow .2s;
+            overflow: hidden; /* Añade esto para que la imagen respete los bordes redondeados */
         }
 
         .game-card:hover {
@@ -41,7 +42,27 @@
             height: 180px;
             background: linear-gradient(135deg, #333, #555);
             border-radius: 12px 12px 0 0;
+            background-size: cover; /* Importante para que la imagen cubra todo el espacio */
+            background-position: center; /* Centra la imagen */
+            background-repeat: no-repeat; /* Evita que se repita la imagen */
         }
+
+        /* Clase específica para League of Legends */
+        .game-lol {
+            background-image: url('imagenes/lol.jpg');
+            background-blend-mode: overlay; /* Opcional: mezcla la imagen con el color de fondo */
+        }
+
+        .game-cs2 {
+            background-image: url('imagenes/cs2.jpg');
+            background-blend-mode: overlay; /* Opcional: mezcla la imagen con el color de fondo */
+        }
+
+        .game-valorant {
+            background-image: url('imagenes/valorant.jpg');
+            background-blend-mode: overlay; /* Opcional: mezcla la imagen con el color de fondo */
+        }
+
 
 
 
@@ -93,7 +114,7 @@
         <!-- Card -->
         <div class="col-md-4">
             <div class="game-card h-100">
-                <div class="game-img"></div>
+                <div class="game-img game-cs2"></div>
                 <div class="p-3">
                     <h5 class="fw-bold">CS2</h5>
                     <p class="small text-muted">FPS · Competitivo</p>
@@ -110,7 +131,7 @@
         <!-- Card -->
         <div class="col-md-4">
             <div class="game-card h-100">
-                <div class="game-img" style="background-image: url('/images/lol.jpg');"></div>
+                <div class="game-img game-valorant" ></div>
 
                 <div class="p-3">
                     <h5 class="fw-bold">Valorant</h5>

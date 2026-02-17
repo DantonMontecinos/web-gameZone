@@ -1,7 +1,10 @@
 package io.java.springbootstart.project_me.controller;
 
 import io.java.springbootstart.project_me.dto.JugadorDTO;
+import io.java.springbootstart.project_me.modelo.Juego;
 import io.java.springbootstart.project_me.modelo.Jugador;
+import io.java.springbootstart.project_me.repository.JuegoRepositorio;
+import io.java.springbootstart.project_me.repository.JugadorRepositorio;
 import io.java.springbootstart.project_me.service.JugadorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +22,12 @@ import java.util.Optional;
 public class JugadorControlador {
 
     private final JugadorService jugadorService;
+    private final JuegoRepositorio juegoRepositorio;
 
     @Autowired
-    public JugadorControlador(JugadorService jugadorService) {
+    public JugadorControlador(JugadorService jugadorService, JuegoRepositorio juegoRepositorio) {
         this.jugadorService = jugadorService;
+        this.juegoRepositorio = juegoRepositorio;
     }
 
     /**
@@ -31,6 +36,9 @@ public class JugadorControlador {
     @GetMapping("/nuevo")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("jugador", new JugadorDTO());
+        model.addAttribute("juegos", juegoRepositorio.findAll());
+
+
         return "users/crear";
     }
 
@@ -40,19 +48,30 @@ public class JugadorControlador {
     @PostMapping("/guardar")
     public String guardarJugador(@Valid @ModelAttribute("jugador") JugadorDTO jugadorDTO,
                                  BindingResult result,
-                                 RedirectAttributes redirectAttributes) {
+                                 RedirectAttributes redirectAttributes,
+                                 Model model) {
+
+        System.out.println("=== MÉTODO GUARDAR EJECUTÁNDOSE ===");
+        System.out.println("Juego ID recibido: " + jugadorDTO.getJuegoId());
+        System.out.println("Nombre: " + jugadorDTO.getNombre());
+        System.out.println("Email: " + jugadorDTO.getEmail());
 
         if (result.hasErrors()) {
+            System.out.println("Errores de validación: " + result.getAllErrors());
+            List<Juego> juegos = juegoRepositorio.findAll();
+            model.addAttribute("juegos", juegos);
             return "users/crear";
         }
 
         try {
             Jugador jugadorGuardado = jugadorService.crearJugador(jugadorDTO);
+            System.out.println("Jugador guardado con ID: " + jugadorGuardado.getId());
             redirectAttributes.addFlashAttribute("mensajeExito",
                     "¡Jugador registrado exitosamente! Ya puedes iniciar sesión.");
             return "redirect:/login";
 
         } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
             redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
             return "redirect:/jugadores/nuevo";
         }
@@ -64,21 +83,24 @@ public class JugadorControlador {
     @GetMapping("/perfil/{id}")
     public String mostrarPerfilJugador(@PathVariable Long id, Model model,
                                        RedirectAttributes redirectAttributes) {
+
         try {
             Optional<Jugador> jugadorOpt = jugadorService.obtenerJugadorPorId(id);
 
             if (jugadorOpt.isPresent()) {
                 model.addAttribute("jugador", jugadorOpt.get());
-                return "admin/vistaJugador";
+                // 👇 SOLO CAMBIA ESTO: debe coincidir con tu archivo HTML
+                return "admin/vistaJugador"; // Asegúrate que el archivo sea vistaJugador.html
             } else {
                 redirectAttributes.addFlashAttribute("mensajeError", "Jugador no encontrado");
-                return "redirect:/jugadores/lista";
+                return "redirect:/admin/lista"; // Ajusta la ruta según tu mapeo
             }
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("mensajeError", "Error al cargar el perfil");
-            return "redirect:/jugadores/lista";
+            return "redirect:/admin/lista";
         }
+
     }
 
     /**

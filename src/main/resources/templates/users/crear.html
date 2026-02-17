@@ -128,13 +128,13 @@
                         <i class="fas fa-user-edit text-warning me-2"></i>Datos del Jugador
                     </h4>
 
-                    <form th:action="@{/jugadores/guardar}" method="post">
+                    <form th:action="@{/jugadores/guardar}"  th:object="${jugador}" method="post">
 
 
                     <div class="mb-3">
                             <label class="form-label">Nombre</label>
                             <input type="text" class="form-control" name="nombre"
-                                   th:value="${jugador.nombre}" required>
+                                   th:field="*{nombre}" required>
                         </div>
 
                         <div class="mb-3">
@@ -146,32 +146,46 @@
                         <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" name="email"
-                                   th:value="${jugador.email}" required>
+                                   th:field="*{email}" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Nombre de Usuario</label>
                             <input type="text" class="form-control" name="usuario"
-                                   th:value="${jugador.usuario}" required>
+                                   th:field="*{usuario}" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Contraseña</label>
                             <input type="password" class="form-control" name="password"
+                                   th:field="*{password}"
                                    placeholder="Cambiar contraseña (opcional)">
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Fecha de Nacimiento</label>
                             <input type="date" class="form-control" name="fechaNacimiento"
-                                   th:value="${jugador.fechaNacimiento}" required>
+                                   th:field="*{fechaNacimiento}" required>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Descripción</label>
                             <textarea class="form-control" name="descripcion" rows="3"
-                                      th:text="${jugador.descripcion}"></textarea>
+                                      th:field="*{descripcion}"></textarea>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Juego</label>
+                            <select class="form-control" th:field="*{juegoId}">
+                                <option value="">-- Seleccione un juego --</option>
+                                <option th:each="juego : ${juegos}"
+                                        th:value="${juego.id}"
+                                        th:text="${juego.nombre}">
+                                </option>
+                            </select>
+                        </div>
+
+
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-warning btn-lg">

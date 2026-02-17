@@ -2,7 +2,9 @@ package io.java.springbootstart.project_me.service;
 
 
 import io.java.springbootstart.project_me.dto.JugadorDTO;
+import io.java.springbootstart.project_me.modelo.Juego;
 import io.java.springbootstart.project_me.modelo.Jugador;
+import io.java.springbootstart.project_me.repository.JuegoRepositorio;
 import io.java.springbootstart.project_me.repository.JugadorRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,11 +20,15 @@ public class JugadorService {
 
     private final JugadorRepositorio jugadorRepositorio;
     private final PasswordEncoder passwordEncoder;
+    private final JuegoRepositorio juegoRepositorio;
+
+    
 
     @Autowired
-    public JugadorService(JugadorRepositorio jugadorRepositorio, PasswordEncoder passwordEncoder) {
+    public JugadorService(JugadorRepositorio jugadorRepositorio, PasswordEncoder passwordEncoder, JuegoRepositorio juegoRepositorio) {
         this.jugadorRepositorio = jugadorRepositorio;
         this.passwordEncoder = passwordEncoder;
+        this.juegoRepositorio = juegoRepositorio;
     }
 
     /**
@@ -79,6 +85,8 @@ public class JugadorService {
             throw new IllegalArgumentException("Ya existe un jugador con ese nombre de usuario");
         }
 
+
+
         Jugador jugador = new Jugador();
         jugador.setNombre(jugadorDTO.getNombre());
         jugador.setApellido(jugadorDTO.getApellido());
@@ -87,6 +95,13 @@ public class JugadorService {
         jugador.setPassword(passwordEncoder.encode(jugadorDTO.getPassword()));
         jugador.setFechaNacimiento(jugadorDTO.getFechaNacimiento());
         jugador.setDescripcion(jugadorDTO.getDescripcion());
+
+        Juego juego = juegoRepositorio.findById(jugadorDTO.getJuegoId())
+                .orElseThrow(() -> new IllegalArgumentException("Juego no encontrado"));
+
+        jugador.setJuego(juego);
+
+
 
         return jugadorRepositorio.save(jugador);
     }

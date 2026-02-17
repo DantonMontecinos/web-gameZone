@@ -50,4 +50,6 @@ public interface JugadorRepositorio extends JpaRepository<Jugador, Long> {
      * Contar jugadores activos
      */
     long countByActivoTrue();
+
+
 }
