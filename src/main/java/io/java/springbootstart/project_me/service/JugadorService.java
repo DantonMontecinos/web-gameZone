@@ -31,6 +31,11 @@ public class JugadorService {
         this.juegoRepositorio = juegoRepositorio;
     }
 
+    public Jugador buscarPorEmail(String email) {
+        return jugadorRepositorio.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
+    }
+
     /**
      * Obtener todos los jugadores activos
      */

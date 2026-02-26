@@ -8,6 +8,7 @@ import io.java.springbootstart.project_me.repository.JugadorRepositorio;
 import io.java.springbootstart.project_me.service.JugadorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -80,6 +81,28 @@ public class JugadorControlador {
     /**
      * Mostrar perfil de jugador
      */
+
+    @GetMapping("/mi-perfil")
+    public String redirigirAPerfil(Authentication authentication,
+                                   RedirectAttributes redirectAttributes) {
+
+        if (authentication == null) {
+            return "redirect:/login";
+        }
+
+        String email = authentication.getName();
+
+        Optional<Jugador> jugadorOpt = jugadorService.obtenerJugadorPorEmail(email);
+
+        if (jugadorOpt.isPresent()) {
+            return "redirect:/jugadores/perfil/" + jugadorOpt.get().getId();
+        } else {
+            redirectAttributes.addFlashAttribute("mensajeError", "Jugador no encontrado");
+            return "redirect:/login";
+        }
+    }
+
+
     @GetMapping("/perfil/{id}")
     public String mostrarPerfilJugador(@PathVariable Long id, Model model,
                                        RedirectAttributes redirectAttributes) {
@@ -102,6 +125,7 @@ public class JugadorControlador {
         }
 
     }
+
 
     /**
      * Listar jugadores

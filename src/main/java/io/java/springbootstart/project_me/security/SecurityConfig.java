@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .userDetailsService(userDetailsService)
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/index", true)
+                        .defaultSuccessUrl("/jugadores/mi-perfil", true)
                         .failureUrl("/login?error=true")
                         .usernameParameter("email")
                         .passwordParameter("password")

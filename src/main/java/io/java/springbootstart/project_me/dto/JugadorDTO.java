@@ -6,6 +6,8 @@ import java.time.LocalDate;
 public class JugadorDTO {
 
     private Long juegoId;
+    private Long id;
+
 
     public Long getJuegoId() { return juegoId; }
     public void setJuegoId(Long juegoId) { this.juegoId = juegoId; }
@@ -114,5 +116,11 @@ public class JugadorDTO {
     }
 
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

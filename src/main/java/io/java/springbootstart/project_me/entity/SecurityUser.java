@@ -32,4 +32,6 @@ public class SecurityUser implements UserDetails {
     public String getUsername() {
         return jugador.getEmail();
     }
+
+
 }
