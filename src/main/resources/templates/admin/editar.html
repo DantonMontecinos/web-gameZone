@@ -87,40 +87,46 @@
                     <p class="text-muted">Actualizá tu información personal</p>
                 </div>
 
-                <form th:action="@{/jugadores/actualizar/{id}(id=${jugador.id})}" method="post">
+                <form th:action="@{/jugadores/actualizar}"
+                      th:object="${jugador}"
+                      method="post">
+
+                    <input type="hidden" th:field="*{id}" />
 
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
                         <input type="text" class="form-control"
                                name="nombre"
-                               th:value="${jugador.nombre}" required>
+                               th:field="*{nombre}" required>
+
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Apellido</label>
                         <input type="text" class="form-control"
                                name="apellido"
-                               th:value="${jugador.apellido}" required>
+                               th:field="*{apellido}" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Email</label>
                         <input type="email" class="form-control"
                                name="email"
-                               th:value="${jugador.email}" required>
+                               th:field="*{email}" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Usuario</label>
                         <input type="text" class="form-control"
                                name="usuario"
-                               th:value="${jugador.usuario}" required>
+                               th:field="*{usuario}" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
                         <input type="password" class="form-control"
                                name="password"
+                               th:field="*{password}"
                                placeholder="Dejar vacío para no cambiarla">
                     </div>
 
@@ -128,15 +134,17 @@
                         <label class="form-label">Fecha de nacimiento</label>
                         <input type="date" class="form-control"
                                name="fechaNacimiento"
-                               th:value="${jugador.fechaNacimiento}" required>
+                               th:field="*{fechaNacimiento}" required>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Descripción</label>
                         <textarea class="form-control" rows="3"
                                   name="descripcion"
-                                  th:text="${jugador.descripcion}"></textarea>
+                                  th:field="*{descripcion}"></textarea>
                     </div>
+
+
 
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">

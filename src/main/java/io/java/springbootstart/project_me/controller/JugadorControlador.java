@@ -43,6 +43,11 @@ public class JugadorControlador {
         return "users/crear";
     }
 
+    @GetMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "FUNCIONA";
+    }
     /**
      * Guardar nuevo jugador
      */
@@ -166,27 +171,21 @@ public class JugadorControlador {
     /**
      * Actualizar jugador
      */
-    @PostMapping("/actualizar/{id}")
-    public String actualizarJugador(@PathVariable Long id,
-                                    @Valid @ModelAttribute("jugador") JugadorDTO jugadorDTO,
-                                    BindingResult result,
-                                    RedirectAttributes redirectAttributes,
-                                    Model model) {
+    @PostMapping("/actualizar")
+    public String actualizarJugador(
+            @Valid @ModelAttribute("jugador") JugadorDTO jugadorDTO,
+            BindingResult result,
+            Model model) {
 
         if (result.hasErrors()) {
-            model.addAttribute("jugadorId", id);
+            model.addAttribute("jugadorId", jugadorDTO.getId());
             return "admin/editar";
         }
+        System.out.println("ID recibido: " + jugadorDTO.getId());
+        jugadorService.actualizarJugador(jugadorDTO.getId(), jugadorDTO);
 
-        try {
-            jugadorService.actualizarJugador(id, jugadorDTO);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Perfil actualizado exitosamente");
-            return "redirect:/jugadores/perfil/" + id;
 
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
-            return "redirect:/jugadores/editar/" + id;
-        }
+        return "redirect:/jugadores/perfil/" + jugadorDTO.getId();
     }
 
     /**

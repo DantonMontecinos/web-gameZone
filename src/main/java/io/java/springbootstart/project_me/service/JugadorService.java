@@ -118,6 +118,10 @@ public class JugadorService {
         Jugador jugadorExistente = jugadorRepositorio.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Jugador no encontrado con ID: " + id));
 
+        if (jugadorDTO.getPassword() != null && jugadorDTO.getPassword().isBlank()) {
+            jugadorDTO.setPassword(null);
+        }
+
         // Verificar email solo si es diferente al actual
         if (!jugadorExistente.getEmail().equals(jugadorDTO.getEmail()) &&
                 existeJugadorConEmail(jugadorDTO.getEmail())) {
@@ -172,6 +176,7 @@ public class JugadorService {
      */
     public JugadorDTO convertirADto(Jugador jugador) {
         JugadorDTO dto = new JugadorDTO();
+        dto.setId(jugador.getId());
         dto.setNombre(jugador.getNombre());
         dto.setApellido(jugador.getApellido());
         dto.setEmail(jugador.getEmail());
@@ -180,4 +185,6 @@ public class JugadorService {
         dto.setDescripcion(jugador.getDescripcion());
         return dto;
     }
+
+
 }
