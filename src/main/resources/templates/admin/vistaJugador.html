@@ -70,6 +70,13 @@
     </div>
 </nav>
 
+
+<form th:action="@{/jugadores/eliminar/{id}(id=${jugador.id})}"
+      method="post"
+      onsubmit="return confirm('¿Estás seguro?');">>
+
+
+
 <!-- Profile Hero -->
 <div class="container my-5">
     <div class="card-pro p-4 mb-4">
@@ -96,6 +103,8 @@
 
     <!-- Info Grid -->
     <div class="row g-4">
+
+
 
         <!-- Información personal -->
         <div class="col-lg-6">
@@ -147,20 +156,21 @@
 
         <!-- Acciones -->
         <div class="col-12 text-end">
-            <a th:href="@{/jugadores}"
+            <a th:href="@{/jugadores/listaJugadores}"
                class="btn btn-outline-secondary me-2">
                 Volver
             </a>
 
-            <a th:href="@{/jugadores/eliminar/{id}(id=${jugador.id})}"
-               class="btn btn-outline-danger"
-               onclick="return confirm('¿Estás seguro de eliminar este jugador?');">
+            <button type="submit" class="btn btn-outline-danger">
                 Eliminar perfil
-            </a>
+            </button>
         </div>
 
     </div>
 </div>
+
+</form>
+
 
 <!-- Footer -->
 <footer class="py-3 text-center text-muted">

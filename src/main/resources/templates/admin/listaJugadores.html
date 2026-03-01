@@ -87,68 +87,75 @@
     </div>
 
     <!-- Accordion de juegos -->
+    <!-- Accordion de juegos -->
     <div class="accordion" id="accordionGames">
 
-        <!-- Juego -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingLol">
-                <button class="accordion-button collapsed" type="button"
+        <div class="accordion-item"
+             th:each="juego : ${juegos}">
+
+            <!-- Header del juego -->
+            <h2 class="accordion-header"
+                th:id="'heading-' + ${juego.id}">
+
+                <button class="accordion-button collapsed"
+                        type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#lolPlayers">
-                    League of Legends
-                    <span class="badge ms-3 badge-game">MOBA</span>
+                        th:data-bs-target="'#collapse-' + ${juego.id}"
+                        aria-expanded="false"
+                        th:aria-controls="'collapse-' + ${juego.id}">
+
+                    <span th:text="${juego.nombre}">Nombre del juego</span>
+
+                    <span class="badge ms-3 badge-game"
+                          th:text="${juego.jugadores.size()} + ' jugadores'">
+                    0 jugadores
+                </span>
+
                 </button>
             </h2>
-            <div id="lolPlayers" class="accordion-collapse collapse"
+
+            <!-- Collapse -->
+            <div class="accordion-collapse collapse"
+                 th:id="'collapse-' + ${juego.id}"
+                 th:aria-labelledby="'heading-' + ${juego.id}"
                  data-bs-parent="#accordionGames">
+
                 <div class="accordion-body">
 
-                    <!-- Jugador -->
-                    <div class="player-row">
-                        <div>
-                            <strong>Juan Pérez</strong><br>
-                            <small class="text-muted">@juanlol</small>
-                        </div>
-                        <a href="#" class="btn btn-outline-light btn-sm">Ver perfil</a>
+                    <!-- Si no hay jugadores -->
+                    <div th:if="${#lists.isEmpty(juego.jugadores)}"
+                         class="text-muted">
+                        No hay jugadores registrados en este juego.
                     </div>
 
-                    <div class="player-row">
+                    <!-- Lista de jugadores -->
+                    <div th:each="jugador : ${juego.jugadores}"
+                         class="player-row">
+
                         <div>
-                            <strong>Ana Gómez</strong><br>
-                            <small class="text-muted">@anagamer</small>
+                            <strong th:text="${jugador.nombre + ' ' + jugador.apellido}">
+                                Nombre Apellido
+                            </strong><br>
+
+                            <small class="text-muted"
+                                   th:text="${jugador.usuario}">
+                                @usuario
+                            </small>
                         </div>
-                        <a href="#" class="btn btn-outline-light btn-sm">Ver perfil</a>
+
+                        <a th:href="@{/jugadores/perfil/{id}(id=${jugador.id})}"
+                           class="btn btn-outline-light btn-sm">
+                            Ver perfil
+                        </a>
+
                     </div>
 
                 </div>
             </div>
+
         </div>
 
-        <!-- Otro juego -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingCs">
-                <button class="accordion-button collapsed" type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#csPlayers">
-                    Counter Strike 2
-                    <span class="badge ms-3 badge-game">FPS</span>
-                </button>
-            </h2>
-            <div id="csPlayers" class="accordion-collapse collapse"
-                 data-bs-parent="#accordionGames">
-                <div class="accordion-body">
-
-                    <div class="player-row">
-                        <div>
-                            <strong>Lucas Fernández</strong><br>
-                            <small class="text-muted">@lucasfps</small>
-                        </div>
-                        <a href="#" class="btn btn-outline-light btn-sm">Ver perfil</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+    </div>
 
     </div>
 

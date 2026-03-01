@@ -5,6 +5,7 @@ import io.java.springbootstart.project_me.modelo.Juego;
 import io.java.springbootstart.project_me.modelo.Jugador;
 import io.java.springbootstart.project_me.repository.JuegoRepositorio;
 import io.java.springbootstart.project_me.repository.JugadorRepositorio;
+import io.java.springbootstart.project_me.service.JuegoService;
 import io.java.springbootstart.project_me.service.JugadorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,14 @@ public class JugadorControlador {
     private final JugadorService jugadorService;
     private final JuegoRepositorio juegoRepositorio;
 
+    private final JuegoService juegoService;
+
+
     @Autowired
-    public JugadorControlador(JugadorService jugadorService, JuegoRepositorio juegoRepositorio) {
+    public JugadorControlador(JugadorService jugadorService, JuegoRepositorio juegoRepositorio, JuegoService juegoService) {
         this.jugadorService = jugadorService;
         this.juegoRepositorio = juegoRepositorio;
+        this.juegoService = juegoService;
     }
 
     /**
@@ -137,9 +142,10 @@ public class JugadorControlador {
      */
     @GetMapping({"/lista", "/listaJugadores"})
     public String listarJugadores(Model model) {
-        List<Jugador> jugadores = jugadorService.obtenerTodosLosJugadores();
-        model.addAttribute("jugadores", jugadores);
-        model.addAttribute("totalJugadores", jugadores.size());
+
+        List<Juego> juegos = juegoService.obtenerTodosLosJuegos();
+
+        model.addAttribute("juegos", juegos);
         return "admin/listaJugadores";
     }
 
