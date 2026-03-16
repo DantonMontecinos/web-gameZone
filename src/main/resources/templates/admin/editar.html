@@ -8,58 +8,84 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a, #020617);
-            color: #e5e7eb;
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .navbar {
-            background-color: #020617;
-            border-bottom: 1px solid #1e293b;
+            background: linear-gradient(90deg, #1a1a1a, #2d2d2d);
+            border-bottom: 1px solid #333;
         }
 
         .brand {
             font-weight: 700;
             letter-spacing: 1px;
-            color: #38bdf8;
+            color: #ff9800;
         }
 
         .card-pro {
-            background-color: #020617;
-            border: 1px solid #1e293b;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
             border-radius: 14px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
         }
 
         .form-control,
         textarea {
-            background-color: #020617;
-            border: 1px solid #334155;
-            color: #e5e7eb;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #e0e0e0;
         }
 
         .form-control:focus,
         textarea:focus {
-            border-color: #38bdf8;
+            border-color: #ff9800;
             box-shadow: none;
-            background-color: #020617;
-            color: #e5e7eb;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
         }
 
         .btn-primary {
-            background-color: #38bdf8;
-            border: none;
+            background-color: transparent;
+            color: #ff9800;
+            border: 1px solid #ff9800;
+            transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
-            background-color: #0ea5e9;
+            background-color: #ff9800;
+            color: #121212;
         }
 
         footer {
-            border-top: 1px solid #1e293b;
-            background-color: #020617;
+            border-top: 1px solid #333;
+            background-color: #1a1a1a;
+        }
+
+        /* AVATAR SELECTION */
+        .avatar-label input[type="radio"] {
+            display: none;
+        }
+        .avatar-img {
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            transition: all 0.2s ease-in-out;
+            background-color: #2a2a2a;
+        }
+        .avatar-img:hover {
+            transform: scale(1.1);
+        }
+        .avatar-label input[type="radio"]:checked + .avatar-img {
+            border-color: #ff9800;
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
         }
     </style>
 </head>
@@ -67,10 +93,12 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
     <div class="container">
-        <a class="navbar-brand brand" th:href="@{/index}">VideoGamesHub</a>
-        <span class="navbar-text text-muted">
+        <a class="navbar-brand brand" th:href="@{/index}">
+            <i class="fas fa-gamepad me-2"></i>VideoGamesHub
+        </a>
+        <span class="navbar-text ms-auto text-light">
             Editar perfil
         </span>
     </div>
@@ -130,11 +158,46 @@
                                placeholder="Dejar vacío para no cambiarla">
                     </div>
 
+                    <div class="mb-3 text-center">
+                        <label class="form-label d-block text-start">Selecciona un Avatar</label>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <label class="avatar-label">
+                                <input type="radio" th:field="*{avatar}" name="avatar" value="Felix">
+                                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" class="avatar-img" width="60" height="60" alt="Avatar 1">
+                            </label>
+                            <label class="avatar-label">
+                                <input type="radio" th:field="*{avatar}" name="avatar" value="Anita">
+                                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Anita" class="avatar-img" width="60" height="60" alt="Avatar 2">
+                            </label>
+                            <label class="avatar-label">
+                                <input type="radio" th:field="*{avatar}" name="avatar" value="Leo">
+                                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Leo" class="avatar-img" width="60" height="60" alt="Avatar 3">
+                            </label>
+                            <label class="avatar-label">
+                                <input type="radio" th:field="*{avatar}" name="avatar" value="Mimi">
+                                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mimi" class="avatar-img" width="60" height="60" alt="Avatar 4">
+                            </label>
+                            <label class="avatar-label">
+                                <input type="radio" th:field="*{avatar}" name="avatar" value="Max">
+                                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Max" class="avatar-img" width="60" height="60" alt="Avatar 5">
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label">Fecha de nacimiento</label>
                         <input type="date" class="form-control"
                                name="fechaNacimiento"
                                th:field="*{fechaNacimiento}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Género</label>
+                        <select class="form-control" name="genero" th:field="*{genero}">
+                            <option value="">-- No especificado --</option>
+                            <option value="Hombre">Hombre</option>
+                            <option value="Mujer">Mujer</option>
+                        </select>
                     </div>
 
                     <div class="mb-4">

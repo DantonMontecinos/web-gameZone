@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -28,12 +29,26 @@ public class JugadorControlador {
 
     private final JuegoService juegoService;
 
-
     @Autowired
-    public JugadorControlador(JugadorService jugadorService, JuegoRepositorio juegoRepositorio, JuegoService juegoService) {
+    public JugadorControlador(JugadorService jugadorService, JuegoRepositorio juegoRepositorio,
+            JuegoService juegoService) {
         this.jugadorService = jugadorService;
         this.juegoRepositorio = juegoRepositorio;
         this.juegoService = juegoService;
+    }
+
+    @GetMapping("/juego/{id}")
+    public String verJugadoresPorJuego(@PathVariable Long id, Model model) {
+
+        Juego juego = juegoService.obtenerJuegoPorId(id);
+
+        Map<String, Map<String, List<Jugador>>> jugadoresAgrupados = 
+                jugadorService.agruparJugadoresPorEdadYGenero(juego.getJugadores());
+
+        model.addAttribute("juego", juego);
+        model.addAttribute("jugadoresAgrupados", jugadoresAgrupados);
+
+        return "admin/jugadoresPorJuego";
     }
 
     /**
@@ -44,7 +59,6 @@ public class JugadorControlador {
         model.addAttribute("jugador", new JugadorDTO());
         model.addAttribute("juegos", juegoRepositorio.findAll());
 
-
         return "users/crear";
     }
 
@@ -53,14 +67,15 @@ public class JugadorControlador {
     public String test() {
         return "FUNCIONA";
     }
+
     /**
      * Guardar nuevo jugador
      */
     @PostMapping("/guardar")
     public String guardarJugador(@Valid @ModelAttribute("jugador") JugadorDTO jugadorDTO,
-                                 BindingResult result,
-                                 RedirectAttributes redirectAttributes,
-                                 Model model) {
+            BindingResult result,
+            RedirectAttributes redirectAttributes,
+            Model model) {
 
         System.out.println("=== MÉTODO GUARDAR EJECUTÁNDOSE ===");
         System.out.println("Juego ID recibido: " + jugadorDTO.getJuegoId());
@@ -94,7 +109,7 @@ public class JugadorControlador {
 
     @GetMapping("/mi-perfil")
     public String redirigirAPerfil(Authentication authentication,
-                                   RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
 
         if (authentication == null) {
             return "redirect:/login";
@@ -112,10 +127,9 @@ public class JugadorControlador {
         }
     }
 
-
     @GetMapping("/perfil/{id}")
     public String mostrarPerfilJugador(@PathVariable Long id, Model model,
-                                       RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
 
         try {
             Optional<Jugador> jugadorOpt = jugadorService.obtenerJugadorPorId(id);
@@ -136,11 +150,10 @@ public class JugadorControlador {
 
     }
 
-
     /**
      * Listar jugadores
      */
-    @GetMapping({"/lista", "/listaJugadores"})
+    @GetMapping({ "/lista", "/listaJugadores" })
     public String listarJugadores(Model model) {
 
         List<Juego> juegos = juegoService.obtenerTodosLosJuegos();
@@ -154,7 +167,7 @@ public class JugadorControlador {
      */
     @GetMapping("/editar/{id}")
     public String editarJugador(@PathVariable Long id, Model model,
-                                RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
         try {
             Optional<Jugador> jugadorOpt = jugadorService.obtenerJugadorPorId(id);
 
@@ -189,7 +202,6 @@ public class JugadorControlador {
         }
         System.out.println("ID recibido: " + jugadorDTO.getId());
         jugadorService.actualizarJugador(jugadorDTO.getId(), jugadorDTO);
-
 
         return "redirect:/jugadores/perfil/" + jugadorDTO.getId();
     }
@@ -241,6 +253,5 @@ public class JugadorControlador {
         model.addAttribute("totalJugadores", jugadores.size());
         return "admin/listaJugadores";
     }
-
 
 }

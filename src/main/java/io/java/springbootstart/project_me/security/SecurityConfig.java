@@ -30,33 +30,28 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                                // Permitir TODAS las rutas temporalmente mientras reestructuras
-                                .requestMatchers("/**").permitAll()
-
-                        // Si quieres mantener algunas rutas protegidas en el futuro,
-                        // puedes comentar la línea anterior y descomentar estas:
-                        /*
-                        .requestMatchers("/", "/index", "/crear", "/jugadores/nuevo", "/jugadores/guardar",
-                                "/inicioLogeoCrear", "/login", "/listadoGames", "/css/**", "/js/**",
-                                "/images/**", "/webjars/**", "/error", "/jugadores/**",
-                                "/games/**", "/comunidades/**", "/perfil/**", "/admin/**").permitAll()
+                        .requestMatchers("/", "/index", "/login", "/crear", "/jugadores/nuevo", "/jugadores/guardar",
+                                "/inicioLogeoCrear", "/css/**", "/js/**",
+                                "/images/**", "/webjars/**", "/error").permitAll()
+                        // Las rutas de WebSocket/SockJS se manejan aparte:
+                        .requestMatchers("/chat/**").authenticated()
                         .anyRequest().authenticated()
-                        */
                 )
                 // Deshabilitar CSRF temporalmente para facilitar desarrollo
                 .csrf(csrf -> csrf.disable())
                 .userDetailsService(userDetailsService)
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/jugadores/mi-perfil", true)
-                        .failureUrl("/login?error=true")
+                        .loginPage("/")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/dashboard", true)
+                        .failureUrl("/?error=true")
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout=true")
+                        .logoutSuccessUrl("/?logout=true")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()

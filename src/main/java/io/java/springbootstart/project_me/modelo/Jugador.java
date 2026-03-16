@@ -72,6 +72,12 @@ public class Jugador {
     @Column(name = "activo")
     private Boolean activo = true;
 
+    @Column(length = 255)
+    private String avatar;
+
+    @Column(length = 30)
+    private String genero;
+
     // Constructor vacío (requerido por JPA)
     public Jugador() {
     }
@@ -173,6 +179,22 @@ public class Jugador {
 
     public void setActivo(Boolean activo) {
         this.activo = activo;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
     // Método de conveniencia para obtener nombre completo

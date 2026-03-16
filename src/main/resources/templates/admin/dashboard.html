@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Dashboard | VideoGamesHub</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ======================
+           GLOBAL
+        ====================== */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        a { text-decoration: none; }
+
+        /* ======================
+           NAVBAR
+        ====================== */
+        .navbar {
+            background: linear-gradient(90deg, #1a1a1a, #2d2d2d);
+            border-bottom: 1px solid #333;
+        }
+
+        .navbar-brand i { color: #ff9800; }
+
+        /* ======================
+           HERO SECTION
+        ====================== */
+        .hero {
+            min-height: 55vh;
+            background: url("https://picsum.photos/1920/1080?gaming") center/cover no-repeat;
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ======================
+           CARDS
+        ====================== */
+        .custom-card {
+            height: 100%;
+            color: #fff;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .custom-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        .custom-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(255, 152, 0, 0.15);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .card-games  { background: url("https://picsum.photos/600/400?multiplayer") center/cover; }
+        .card-profile { background: url("https://picsum.photos/600/400?avatar") center/cover; }
+        .card-community { background: url("https://picsum.photos/600/400?team") center/cover; }
+
+        /* ======================
+           FEATURES
+        ====================== */
+        .features i {
+            font-size: 2rem;
+            color: #0d6efd;
+        }
+
+        /* ======================
+           HOW IT WORKS
+        ====================== */
+        .how-it-works i {
+            font-size: 3rem;
+            color: #ff9800;
+        }
+
+        /* ======================
+           FOOTER
+        ====================== */
+        footer {
+            background: #1f1f1f;
+        }
+
+        footer i {
+            font-size: 1.3rem;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/dashboard}">
+            <i class="fas fa-gamepad me-2"></i>VideoGamesHub
+        </a>
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarMenu" class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link active" th:href="@{/dashboard}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/listadoGames}">Juegos</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/chat}"><i class="fas fa-comments me-1"></i>Chat</a></li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <a th:href="@{/jugadores/mi-perfil}" class="btn btn-outline-light btn-sm me-2">
+                    <i class="fas fa-user me-1"></i>Mi Perfil
+                </a>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="fas fa-sign-out-alt me-1"></i>Salir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero d-flex align-items-center text-center" style="padding-top:70px;">
+    <div class="container hero-content">
+        <h1 class="display-4 fw-bold">¡Bienvenido de vuelta!</h1>
+        <p class="lead mb-4">Explora juegos, conecta con otros jugadores y domina la comunidad.</p>
+        <a th:href="@{/listadoGames}" class="btn btn-warning btn-lg me-2">
+            <i class="fas fa-gamepad me-1"></i>Explorar Juegos
+        </a>
+        <a th:href="@{/chat}" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-comments me-1"></i>Ir al Chat
+        </a>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="container py-5 how-it-works text-center">
+    <h2 class="mb-5">¿Qué puedes hacer?</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <i class="fas fa-search mb-3"></i>
+            <h5>Explorar Juegos</h5>
+            <p class="text-muted">Encuentra los juegos más populares de la comunidad.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <i class="fas fa-users mb-3"></i>
+            <h5>Conectar con Jugadores</h5>
+            <p class="text-muted">Busca jugadores por juego, edad y género.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <i class="fas fa-user-edit mb-3"></i>
+            <h5>Personalizar tu Perfil</h5>
+            <p class="text-muted">Actualiza tu avatar, descripción y juegos favoritos.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CARDS -->
+<section class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card custom-card card-games">
+                <div class="card-body text-center card-content p-4">
+                    <i class="fas fa-fire card-icon text-warning"></i>
+                    <h5>Juegos Populares</h5>
+                    <p>Descubre lo más jugado por la comunidad.</p>
+                    <a th:href="@{/listadoGames}" class="btn btn-warning">Ver Juegos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card custom-card card-profile">
+                <div class="card-body text-center card-content p-4">
+                    <i class="fas fa-id-card card-icon text-primary"></i>
+                    <h5>Tu Perfil</h5>
+                    <p>Personaliza tu experiencia gamer.</p>
+                    <a th:href="@{/jugadores/mi-perfil}" class="btn btn-primary">Ir a Mi Perfil</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card custom-card card-community">
+                <div class="card-body text-center card-content p-4">
+                    <i class="fas fa-comments card-icon text-info"></i>
+                    <h5>Chat en Vivo</h5>
+                    <p>Chatea en tiempo real con tus amigos gamers.</p>
+                    <a th:href="@{/chat}" class="btn btn-info">Ir al Chat</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="container py-5 features">
+    <h2 class="text-center mb-5">Características</h2>
+    <div class="row text-center">
+        <div class="col-md-3 mb-3">
+            <i class="fas fa-comments mb-2"></i>
+            <p>Chat en tiempo real</p>
+        </div>
+        <div class="col-md-3 mb-3">
+            <i class="fas fa-user-cog mb-2"></i>
+            <p>Perfiles personalizables</p>
+        </div>
+        <div class="col-md-3 mb-3">
+            <i class="fas fa-search mb-2"></i>
+            <p>Buscador por juego</p>
+        </div>
+        <div class="col-md-3 mb-3">
+            <i class="fas fa-star mb-2"></i>
+            <p>Reseñas y calificaciones</p>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="pt-4 pb-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>VideoGamesHub</h5>
+                <p>La plataforma para conectar jugadores de todo el mundo.</p>
+            </div>
+            <div class="col-md-4">
+                <h6>Enlaces</h6>
+                <ul class="list-unstyled">
+                    <li><a th:href="@{/dashboard}" class="text-light">Dashboard</a></li>
+                    <li><a th:href="@{/listadoGames}" class="text-light">Juegos</a></li>
+                    <li><a th:href="@{/jugadores/lista}" class="text-light">Jugadores</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6>Seguinos</h6>
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-discord"></i>
+            </div>
+        </div>
+        <hr>
+        <p class="text-center mb-0">&copy; 2024 VideoGamesHub</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

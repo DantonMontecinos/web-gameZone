@@ -85,6 +85,25 @@
             font-size: 1.3rem;
             margin-right: 10px;
         }
+
+        /* AVATAR SELECTION */
+        .avatar-label input[type="radio"] {
+            display: none;
+        }
+        .avatar-img {
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            transition: all 0.2s ease-in-out;
+            background-color: #2a2a2a;
+        }
+        .avatar-img:hover {
+            transform: scale(1.1);
+        }
+        .avatar-label input[type="radio"]:checked + .avatar-img {
+            border-color: #ff9800;
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
+        }
     </style>
 </head>
 
@@ -162,10 +181,45 @@
                                    placeholder="Cambiar contraseña (opcional)">
                         </div>
 
+                        <div class="mb-3 text-center">
+                            <label class="form-label d-block text-start">Selecciona un Avatar</label>
+                            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                <label class="avatar-label">
+                                    <input type="radio" th:field="*{avatar}" name="avatar" value="Felix" required>
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" class="avatar-img" width="60" height="60" alt="Avatar 1">
+                                </label>
+                                <label class="avatar-label">
+                                    <input type="radio" th:field="*{avatar}" name="avatar" value="Anita">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Anita" class="avatar-img" width="60" height="60" alt="Avatar 2">
+                                </label>
+                                <label class="avatar-label">
+                                    <input type="radio" th:field="*{avatar}" name="avatar" value="Leo">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Leo" class="avatar-img" width="60" height="60" alt="Avatar 3">
+                                </label>
+                                <label class="avatar-label">
+                                    <input type="radio" th:field="*{avatar}" name="avatar" value="Mimi">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mimi" class="avatar-img" width="60" height="60" alt="Avatar 4">
+                                </label>
+                                <label class="avatar-label">
+                                    <input type="radio" th:field="*{avatar}" name="avatar" value="Max">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Max" class="avatar-img" width="60" height="60" alt="Avatar 5">
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Fecha de Nacimiento</label>
                             <input type="date" class="form-control" name="fechaNacimiento"
                                    th:field="*{fechaNacimiento}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Género</label>
+                            <select class="form-control" name="genero" th:field="*{genero}">
+                                <option value="">-- No especificado --</option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="Mujer">Mujer</option>
+                            </select>
                         </div>
 
                         <div class="mb-4">

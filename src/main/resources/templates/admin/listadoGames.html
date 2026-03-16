@@ -7,6 +7,8 @@
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
         body {
@@ -15,9 +17,17 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        .navbar, footer {
+        .navbar {
+            background: linear-gradient(90deg, #1a1a1a, #2d2d2d);
+        }
+        .navbar-brand i {
+            color: #ff9800;
+        }
+        
+        footer {
             background-color: #1f1f1f;
         }
 
@@ -75,10 +85,12 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/index}">Game Project Zone</a>
-        <span class="navbar-text ms-auto">Conecta · Juega · Compite</span>
+        <a class="navbar-brand" th:href="@{/index}">
+            <i class="fas fa-gamepad me-2"></i>Game Project Zone
+        </a>
+        <span class="navbar-text ms-auto text-light">Conecta · Juega · Compite</span>
     </div>
 </nav>
 
@@ -95,6 +107,7 @@
     <div class="row g-4">
 
         <!-- Card -->
+
         <div class="col-md-4">
             <div class="game-card h-100">
                 <div class="game-img game-lol"></div>
@@ -102,10 +115,14 @@
                     <h5 class="fw-bold">League of Legends</h5>
                     <p class="small text-muted">MOBA · Competitivo</p>
 
-                    <span class="badge badge-players mb-2">+1200 jugadores</span>
+                    <span class="badge badge-players mb-2"
+                          th:text="${#lists.size(juegos[0].jugadores)} + ' jugadores'">
+                    </span>
 
                     <div class="d-grid mt-3">
-                        <a href="#" class="btn btn-outline-light btn-sm">Ver comunidad</a>
+                        <a th:href="@{/jugadores/juego/1}" class="btn btn-outline-light btn-sm">
+                            Ver comunidad
+                        </a>
                     </div>
                 </div>
             </div>
@@ -119,10 +136,12 @@
                     <h5 class="fw-bold">CS2</h5>
                     <p class="small text-muted">FPS · Competitivo</p>
 
-                    <span class="badge badge-players mb-2">+980 jugadores</span>
+                    <span class="badge badge-players mb-2"
+                          th:text="${#lists.size(juegos[1].jugadores)} + ' jugadores'">
+                    </span>
 
                     <div class="d-grid mt-3">
-                        <a href="#" class="btn btn-outline-light btn-sm">Ver comunidad</a>
+                        <a th:href="@{/jugadores/juego/2}" class="btn btn-outline-light btn-sm">Ver comunidad</a>
                     </div>
                 </div>
             </div>
@@ -137,10 +156,12 @@
                     <h5 class="fw-bold">Valorant</h5>
                     <p class="small text-muted">FPS · Tactical</p>
 
-                    <span class="badge badge-players mb-2">+850 jugadores</span>
+                    <span class="badge badge-players mb-2"
+                          th:text="${#lists.size(juegos[2].jugadores)} + ' jugadores'">
+                    </span>
 
                     <div class="d-grid mt-3">
-                        <a href="#" class="btn btn-outline-light btn-sm">Ver comunidad</a>
+                        <a th:href="@{/jugadores/juego/3}" class="btn btn-outline-light btn-sm">Ver comunidad</a>
                     </div>
                 </div>
             </div>
@@ -151,7 +172,7 @@
     <!-- CTA inferior -->
     <div class="text-center mt-5">
         <p class="text-muted">¿No ves tu juego?</p>
-        <a th:href="@{/crear}" class="btn btn-primary">Crear perfil y proponer juego</a>
+        <a th:href="@{/crear}" class="btn btn-warning">Crear perfil y proponer juego</a>
     </div>
 
 </main>

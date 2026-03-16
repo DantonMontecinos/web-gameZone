@@ -7,53 +7,65 @@
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a, #020617);
-            color: #e5e7eb;
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .navbar {
-            background-color: #020617;
-            border-bottom: 1px solid #1e293b;
+            background: linear-gradient(90deg, #1a1a1a, #2d2d2d);
+            border-bottom: 1px solid #333;
         }
 
         .brand {
             font-weight: 700;
             letter-spacing: 1px;
-            color: #38bdf8;
+            color: #ff9800;
         }
 
         .card-pro {
-            background-color: #020617;
-            border: 1px solid #1e293b;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
             border-radius: 16px;
-            box-shadow: 0 0 35px rgba(0, 0, 0, 0.65);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-pro:hover {
+            border-color: #ff9800;
         }
 
         .label {
-            color: #94a3b8;
+            color: #aaa;
             font-size: 0.9rem;
         }
 
         .value {
             font-weight: 500;
+            color: #fff;
         }
 
         .btn-primary {
-            background-color: #38bdf8;
-            border: none;
+            background-color: transparent;
+            color: #ff9800;
+            border: 1px solid #ff9800;
+            transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
-            background-color: #0ea5e9;
+            background-color: #ff9800;
+            color: #121212;
         }
 
         footer {
-            border-top: 1px solid #1e293b;
-            background-color: #020617;
+            border-top: 1px solid #333;
+            background-color: #1a1a1a;
         }
     </style>
 </head>
@@ -61,43 +73,59 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
     <div class="container">
-        <a class="navbar-brand brand" th:href="@{/index}">VideoGamesHub</a>
-        <span class="navbar-text text-muted">
+        <a class="navbar-brand brand" th:href="@{/index}">
+            <i class="fas fa-gamepad me-2"></i>VideoGamesHub
+        </a>
+        <span class="navbar-text ms-auto text-light">
             Perfil del jugador
         </span>
     </div>
 </nav>
 
 
-<form th:action="@{/jugadores/eliminar/{id}(id=${jugador.id})}"
-      method="post"
-      onsubmit="return confirm('¿Estás seguro?');">>
-
-
-
 <!-- Profile Hero -->
 <div class="container my-5">
     <div class="card-pro p-4 mb-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
-            <div>
-                <h2 class="mb-1"
-                    th:text="${jugador.nombre + ' ' + jugador.apellido}">
-                    Nombre Apellido
-                </h2>
-                <p class="text-muted mb-1">
-                    @<span th:text="${jugador.usuario}">usuario</span>
-                </p>
-                <small class="text-muted" th:text="${jugador.email}">
-                    email@email.com
-                </small>
+            <div class="d-flex align-items-center gap-4">
+                <img th:src="@{'https://api.dicebear.com/7.x/adventurer/svg?seed=' + ${jugador.avatar != null && jugador.avatar != '' ? jugador.avatar : jugador.usuario}}" 
+                     alt="Avatar" class="rounded-circle border border-2 border-warning" width="80" height="80">
+                <div>
+                    <h2 class="mb-1"
+                        th:text="${jugador.nombre + ' ' + jugador.apellido}">
+                        Nombre Apellido
+                    </h2>
+                    <p class="mb-1" style="color: #ccc;">
+                        @<span th:text="${jugador.usuario}">usuario</span>
+                    </p>
+                    <small style="color: #bbb;" th:text="${jugador.email}">
+                        email@email.com
+                    </small>
+                </div>
             </div>
 
-            <a th:href="@{/jugadores/editar/{id}(id=${jugador.id})}"
-               class="btn btn-primary">
-                Editar perfil
-            </a>
+            <div class="d-flex gap-2 align-items-center">
+                <!-- Botón Agregar Amigo (solo visible si no es tu propio perfil) -->
+                <div id="friendAction" th:if="${jugador.email != #authentication.name}">
+                    <button class="btn btn-outline-warning" id="btnAddFriend"
+                            th:data-jugador-id="${jugador.id}"
+                            onclick="enviarSolicitudAmistad(this)">
+                        <i class="fas fa-user-plus me-1"></i>Agregar Amigo
+                    </button>
+                </div>
+
+                <!-- Botón Chatear (visible si son amigos) -->
+                <a th:href="@{/chat}" class="btn btn-outline-info" id="btnChat" style="display:none;">
+                    <i class="fas fa-comments me-1"></i>Chatear
+                </a>
+
+                <a th:href="@{/jugadores/editar/{id}(id=${jugador.id})}"
+                   class="btn btn-primary">
+                    Editar perfil
+                </a>
+            </div>
         </div>
     </div>
 
@@ -136,7 +164,7 @@
             <div class="card-pro p-4 h-100">
                 <h5 class="mb-3">Sobre el jugador</h5>
 
-                <p class="text-muted mb-0"
+                <p class="text-light mb-0"
                    th:text="${jugador.descripcion}">
                     Este jugador aún no agregó una descripción.
                 </p>
@@ -146,8 +174,8 @@
         <!-- Stats / Futuro -->
         <div class="col-12">
             <div class="card-pro p-4">
-                <h5 class="mb-3">Actividad & estadísticas</h5>
-                <p class="text-muted mb-0">
+                <h5 class="mb-3" style="color: #fff;">Actividad & estadísticas</h5>
+                <p class="mb-0" style="color: #ccc;">
                     Próximamente: juegos favoritos, horas jugadas, logros,
                     amigos y actividad reciente.
                 </p>
@@ -156,26 +184,63 @@
 
         <!-- Acciones -->
         <div class="col-12 text-end">
-            <a th:href="@{/jugadores/listaJugadores}"
+            <a th:href="@{/dashboard}"
                class="btn btn-outline-secondary me-2">
                 Volver
             </a>
 
-            <button type="submit" class="btn btn-outline-danger">
-                Eliminar perfil
-            </button>
+            <form th:action="@{/jugadores/eliminar/{id}(id=${jugador.id})}" method="post" class="d-inline" onsubmit="return confirm('¿Estás seguro?');">
+                <button type="submit" class="btn btn-outline-danger">
+                    Eliminar perfil
+                </button>
+            </form>
         </div>
 
     </div>
 </div>
-
-</form>
 
 
 <!-- Footer -->
 <footer class="py-3 text-center text-muted">
     <small>&copy; 2024 VideoGamesHub</small>
 </footer>
+
+<script>
+    /**
+     * Envía una solicitud de amistad al jugador cuyo perfil se está viendo.
+     * Usa fetch() para enviar un POST a /amigos/solicitar/{id}.
+     * Actualiza el botón dinámicamente según la respuesta.
+     */
+    function enviarSolicitudAmistad(btn) {
+        const jugadorId = btn.dataset.jugadorId;
+
+        fetch('/amigos/solicitar/' + jugadorId, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.exito) {
+                    btn.innerHTML = '<i class="fas fa-clock me-1"></i>Solicitud Enviada';
+                    btn.className = 'btn btn-secondary';
+                    btn.disabled = true;
+                } else {
+                    // Si ya son amigos o ya existe solicitud, mostrar estado adecuado
+                    if (data.mensaje && data.mensaje.includes('amigos')) {
+                        btn.innerHTML = '<i class="fas fa-user-check me-1"></i>Ya son Amigos';
+                        btn.className = 'btn btn-success';
+                        btn.disabled = true;
+                        document.getElementById('btnChat').style.display = 'inline-block';
+                    } else {
+                        btn.innerHTML = '<i class="fas fa-clock me-1"></i>Solicitud Pendiente';
+                        btn.className = 'btn btn-secondary';
+                        btn.disabled = true;
+                    }
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Error al enviar la solicitud');
+            });
+    }
+</script>
 
 </body>
 </html>

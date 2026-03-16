@@ -19,4 +19,10 @@ public class JuegoService {
         return juegoRepository.findAll();
     }
 
+
+    public Juego obtenerJuegoPorId(Long id){
+        return juegoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
+    }
+
 }
